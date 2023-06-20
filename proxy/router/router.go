@@ -86,7 +86,7 @@ func (r *Rule) FindTableIndex(key interface{}) (int, error) {
 	return r.Shard.FindForKey(key)
 }
 
-//UpdateExprs is the expression after set
+// UpdateExprs is the expression after set
 func (r *Rule) checkUpdateExprs(exprs sqlparser.UpdateExprs) error {
 	if r.Type == DefaultRuleType {
 		return nil
@@ -102,7 +102,7 @@ func (r *Rule) checkUpdateExprs(exprs sqlparser.UpdateExprs) error {
 	return nil
 }
 
-//NewRouter build router according to the config file
+// NewRouter build router according to the config file
 func NewRouter(schemaConfig *config.SchemaConfig) (*Router, error) {
 	if !includeNode(schemaConfig.Nodes, schemaConfig.Default) {
 		return nil, fmt.Errorf("default node[%s] not in the nodes list",
@@ -283,7 +283,7 @@ func includeNode(nodes []string, node string) bool {
 	return false
 }
 
-//build a router plan
+// build a router plan
 func (r *Router) BuildPlan(db string, statement sqlparser.Statement) (*Plan, error) {
 	//因为实现Statement接口的方法都是指针类型，所以type对应类型也是指针类型
 	switch stmt := statement.(type) {
@@ -529,7 +529,7 @@ func (r *Router) buildReplacePlan(db string, statement sqlparser.Statement) (*Pl
 	return plan, nil
 }
 
-//rewrite select sql
+// rewrite select sql
 func (r *Router) rewriteSelectSql(plan *Plan, node *sqlparser.Select, tableIndex int) string {
 	buf := sqlparser.NewTrackedBuffer(nil)
 	buf.Fprintf("select %v%s",
@@ -659,6 +659,7 @@ func (r *Router) rewriteSelectSql(plan *Plan, node *sqlparser.Select, tableIndex
 	return buf.String()
 }
 
+// SQL重写
 func (r *Router) generateSelectSql(plan *Plan, stmt sqlparser.Statement) error {
 	sqls := make(map[string][]string)
 	node, ok := stmt.(*sqlparser.Select)

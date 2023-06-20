@@ -51,7 +51,8 @@ func (c *ClientConn) handleQuery(sql string) (err error) {
 		}
 	}()
 
-	sql = strings.TrimRight(sql, ";") //删除sql语句最后的分号
+	//删除sql语句最后的分号
+	sql = strings.TrimRight(sql, ";")
 	hasHandled, err := c.preHandleShard(sql)
 	if err != nil {
 		golog.Error("server", "preHandleShard", err.Error(), 0,
@@ -65,7 +66,9 @@ func (c *ClientConn) handleQuery(sql string) (err error) {
 	}
 
 	var stmt sqlparser.Statement
-	stmt, err = sqlparser.Parse(sql) //解析sql语句,得到的stmt是一个interface
+
+	//解析sql语句,得到的stmt是一个interface
+	stmt, err = sqlparser.Parse(sql)
 	if err != nil {
 		golog.Error("server", "parse", err.Error(), 0, "hasHandled", hasHandled, "sql", sql)
 		return err
@@ -163,7 +166,7 @@ func (c *ClientConn) getBackendConn(n *backend.Node, fromSlave bool) (co *backen
 	return
 }
 
-//获取shard的conn，第一个参数表示是不是select
+// 获取shard的conn，第一个参数表示是不是select
 func (c *ClientConn) getShardConns(fromSlave bool, plan *router.Plan) (map[string]*backend.BackendConn, error) {
 	var err error
 	if plan == nil || len(plan.RouteNodeIndexs) == 0 {
